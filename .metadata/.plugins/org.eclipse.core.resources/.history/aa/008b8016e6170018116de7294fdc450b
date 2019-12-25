@@ -1,0 +1,11 @@
+package edu.casetools.icase.mreasoner.core.elements.rules;
+
+import java.util.ArrayList;
+
+public class SameTimeRuleManager{
+
+	public ArrayList<SameTimeRule> rules;
+	
+	
+
+}

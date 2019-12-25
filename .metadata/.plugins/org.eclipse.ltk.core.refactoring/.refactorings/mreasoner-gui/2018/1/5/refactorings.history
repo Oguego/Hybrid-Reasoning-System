@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;LampConfigs.java&apos; to &apos;mreasoner-gui/src/main/java/edu.casetools.icase.mreasoner.myactuators&apos;&#x0D;&#x0A;- Original project: &apos;mreasoner-gui&apos;&#x0D;&#x0A;- Destination element: &apos;mreasoner-gui/src/main/java/edu.casetools.icase.mreasoner.myactuators&apos;&#x0D;&#x0A;- Original element: &apos;edu.casetools.icase.mreasoner.myactuators.LampConfigs.java&apos;" description="Copy compilation unit" destination="/src\/main\/java&lt;edu.casetools.icase.mreasoner.myactuators" element1="/src\/main\/java&lt;edu.casetools.icase.mreasoner.myactuators{LampConfigs.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1517229116973" units="1" version="1.0"/>
+</session>

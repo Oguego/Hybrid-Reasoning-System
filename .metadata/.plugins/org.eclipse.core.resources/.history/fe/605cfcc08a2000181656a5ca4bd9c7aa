@@ -1,0 +1,54 @@
+package edu.casetools.icase.mreasoner.core.elements;
+
+import java.util.Vector;
+
+import edu.casetools.icase.mreasoner.core.elements.rules.NextTimeRule;
+import edu.casetools.icase.mreasoner.core.elements.rules.SameTimeRule;
+
+public class MRules {
+
+	private Vector<SameTimeRule>  sameTimeRules;
+	private Vector<NextTimeRule>  nextTimeRules;
+	
+	public MRules(){
+		sameTimeRules     		= new Vector<SameTimeRule>();
+	    nextTimeRules           = new Vector<NextTimeRule>();
+	}
+	
+	public Vector<SameTimeRule> getSameTimeRules() {
+		return sameTimeRules;
+	}
+
+	public void setSameTimeRules(Vector<SameTimeRule> sameTimeRules) {
+		this.sameTimeRules = sameTimeRules;
+	}
+
+	public Vector<NextTimeRule> getNextTimeRules() {
+		return nextTimeRules;
+	}
+
+	public void setNextTimeRules(Vector<NextTimeRule> nextTimeRules) {
+		this.nextTimeRules = nextTimeRules;
+	}
+
+	public void showSystemRules(){
+		System.out.println("** SAME TIME RULES:");
+		for(int i=0;i<sameTimeRules.size();i++){
+			sameTimeRules.get(i).printRule();
+			System.out.println("###Testing***** " +
+					sameTimeRules.get(i).getInternalStates().get(0).getName() + " - " +
+					 sameTimeRules.get(i).getInternalStates().get(1).getName());
+//			System.out.print("###Testing***** ");
+//			sameTimeRules.get(i).printRule();
+			//System.out.println("###Testing*****" +sameTimeRules.get(i)); //
+		}
+		System.out.println("** NEXT TIME RULES:");
+		for(int i=0;i<nextTimeRules.size();i++){
+			nextTimeRules.get(i).printRule();
+		}
+		System.out.println();
+	
+	}	
+	
+
+}

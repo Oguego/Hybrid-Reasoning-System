@@ -1,0 +1,11 @@
+states(CorridorMovement, CorridorLight, BedRoomLight);
+
+is(CorridorMovement);
+is(BedRoomLight);
+
+holdsAt(#CorridorMovement, 0);
+holdsAt(#CorridorLight, 0);
+holdsAt(BedRoomLight, 0);
+
+ssr(([-][20:16:00-21:17:00]BedRoomLight ^ CorridorMovement) -> CorridorLight);
+ssr(([-][21:17:00-22:18:00]CorridorLight) -> #CorridorLight);

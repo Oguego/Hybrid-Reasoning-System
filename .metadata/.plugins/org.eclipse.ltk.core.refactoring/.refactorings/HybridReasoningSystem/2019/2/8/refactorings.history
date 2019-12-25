@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename package &apos;edu.casetools.icase.hybrid&apos; to &apos;hybridsystem&apos;&#x0D;&#x0A;- Original project: &apos;HybridReasoningSystem&apos;&#x0D;&#x0A;- Original element: &apos;HybridReasoningSystem/src/edu.casetools.icase.hybrid&apos;&#x0D;&#x0A;- Renamed element: &apos;HybridReasoningSystem/src/hybridsystem&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename package &apos;edu.casetools.icase.hybrid&apos;" flags="589830" hierarchical="false" id="org.eclipse.jdt.ui.rename.package" input="/src&lt;edu.casetools.icase.hybrid" name="hybridsystem" qualified="false" references="true" stamp="1550766638686" textual="false" version="1.0"/>
+</session>

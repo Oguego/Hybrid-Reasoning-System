@@ -1,0 +1,42 @@
+states(CorridorMovement, CorridorLight, FrontDoorMovement, ToiletLight, ToiletMovement, ShowerRoomLight, 
+ShowerMovement, BigPadIdle, BedRoomLight, KitchenMovement, KitchenLight, LivingRoomLight, LivingRoomMovement);
+
+is(CorridorMovement);
+is(#CorridorMovement);
+is(#FrontDoorMovement);
+is(FrontDoorMovement);
+is(ShowerMovement);
+is(#ShowerMovement);
+is(ToiletMovement);
+is(#ToiletMovement);
+is(BigPadIdle);
+is(#BigPadIdle);
+is(KitchenMovement);
+is(#KitchenMovement);
+is(#LivingRoomMovement);
+is(LivingRoomMovement);
+
+holdsAt(#CorridorMovement, 0);
+holdsAt(#CorridorLight, 0);
+holdsAt(#FrontDoorMovement, 0);
+holdsAt(#ToiletLight, 0);
+holdsAt(#ToiletMovement, 0);
+holdsAt(#ShowerRoomLight, 0);
+holdsAt(#ShowerMovement, 0);
+holdsAt(#BedRoomLight, 0);
+holdsAt(#BigPadIdle, 0);
+holdsAt(#LivingRoomMovement, 0);
+holdsAt(#LivingRoomLight, 0);
+
+ssr((BigPadIdle) -> BedRoomLight);
+ssr((CorridorMovement ^ FrontDoorMovement) -> CorridorLight);
+ssr((LivingRoomMovement) -> LivingRoomLight);
+ssr((#LivingRoomMovement) -> #LivingRoomLight);
+ssr((ToiletMovement) -> ToiletLight);
+ssr((#ToiletMovement) -> #ToiletLight);
+ssr((ShowerMovement) -> ShowerRoomLight);
+ssr((#ShowerMovement) -> #ShowerRoomLight);
+ssr((KitchenMovement) -> KitchenLight);
+ssr((#KitchenMovement) -> #KitchenLight);
+ssr((#FrontDoorMovement ^ #CorridorMovement) -> #CorridorLight);
+ssr((#BigPadIdle) -> #BedRoomLight);

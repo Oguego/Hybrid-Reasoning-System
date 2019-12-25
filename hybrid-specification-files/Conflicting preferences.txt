@@ -1,0 +1,24 @@
+states(LBigLamp, BedroomBedPressure, Television, LivingroomLight, CorridorLight, 
+prefEntertainment, prefEconomy);
+
+is(#BedroomBedPressure);
+is(prefEconomy);
+is(prefEntertainment);
+
+holdsAt(BedroomBedPressure, 0);
+holdsAt(#LBigLamp, 0);
+holdsAt(#Television, 0);
+holdsAt(prefEconomy, 0);
+holdsAt(prefEntertainment, 0);
+holdsAt(#LivingroomLight, 0);
+holdsAt(CorridorLight, 0);
+
+ssr((#BedroomBedPressure ^ prefEconomy) -> LBigLamp);
+ssr((#BedroomBedPressure ^ prefEconomy) -> #Television);
+ssr((#BedroomBedPressure ^ prefEconomy) -> #CorridorLight);
+ssr((#BedroomBedPressure ^ prefEconomy) -> #LivingroomLight);
+
+ssr((#BedroomBedPressure ^ prefEntertainment) -> #LBigLamp);
+ssr((#BedroomBedPressure ^ prefEntertainment) -> Television);
+ssr((#BedroomBedPressure ^ prefEntertainment) -> CorridorLight);
+ssr((#BedroomBedPressure ^ prefEntertainment) -> LivingroomLight);

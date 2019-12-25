@@ -1,0 +1,177 @@
+package edu.casetools.icase.argumentation;
+
+import java.util.Vector;
+
+import edu.casetools.icase.argumentation.ArgumentationDBOperations;
+import edu.casetools.icase.mreasoner.core.elements.rules.SameTimeRule;
+
+import java.sql.SQLException;
+import java.sql.ResultSet;
+import java.sql.Statement;
+//import java.sql.Connection;
+//import java.sql.Date;
+//import java.sql.DriverManager;
+//import java.sql.ResultSet;
+//import java.sql.SQLException;
+
+
+
+
+public class MySQL_ArgumentationDBOperations extends ArgumentationDBOperations{
+
+	String resultsQuery;
+	private Statement stmt;
+	
+	@Override
+	public void connect(){
+		
+		try {
+			dbConnection.connect();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void reconnect() {
+		// TODO Auto-generated method stub
+		dbConnection = new ArgumentationDBConnection();
+		connect();
+	}
+
+
+
+	@Override
+	public void disconnect() {
+		// TODO Auto-generated method stub
+		try {
+			dbConnection.disconnect();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void insertConflict(String consequence1, String consequence2) {
+		// TODO Auto-generated method stub
+		try {
+			String query = "INSERT INTO conflict (idconflict, rule1Consequence, rule2Consequence, occurrenceTime)"
+					   +" VALUES(null, '" + consequence1 + "', '" + consequence2 +  "', current_timestamp)";
+
+			dbConnection.executeUpdate(query);
+    	
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+
+
+	@Override
+	public void createResolvedConflictsTable(int iteration, Vector<SameTimeRule> winner){
+
+		String query = "CREATE TABLE IF NOT EXISTS ResolvedConflicts ("+
+				"iteration bigint PRIMARY KEY, "+
+				"resolved_time DateTime";
+		
+//		System.out.println(winner.get(1).getConsequence().getName());
+
+		for(int i=0;i<winner.size();i++){
+			query = query + ", " + winner.get(i).getConsequence().getName() + " boolean NOT NULL";
+		}
+		query = query + ")";
+		
+		System.out.println(query);
+		
+		try {
+			dbConnection.executeUpdate(query);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		createInsertResolvedConflictsQuery(iteration, winner); //should get conflicting consequence 
+
+		
+	}
+
+	private void createInsertResolvedConflictsQuery(int iteration, Vector<SameTimeRule> winner){
+		
+		try{
+		resultsQuery = "INSERT INTO ResolvedConflicts (iteration,resolved_time";
+		for(int i=0;i<winner.size();i++){
+			resultsQuery = resultsQuery + ","+ winner.get(i).getConsequence().getName();
+		}
+		resultsQuery = resultsQuery + ") VALUES (" + iteration + ", current_timestamp";
+		for(int i=0;i<winner.size();i++){
+			if(winner.get(i).getConsequence().getStatus()){
+				resultsQuery = resultsQuery + ",1";
+			}else{
+				resultsQuery = resultsQuery + ",0";
+			}
+		}
+		resultsQuery = resultsQuery + ")";
+		System.out.println(resultsQuery);
+		dbConnection.executeUpdate(resultsQuery);
+		
+		}catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+	}
+		
+		@Override
+		public void eraseResolvedConflictsTable() {
+		
+			try {
+				String query = "DELETE FROM ResolvedConflicts";
+				dbConnection.executeUpdate(query);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		@Override
+		public void dropResolvedConflictsTable() {
+		
+			try {
+				String query = "DROP TABLE IF EXISTS ResolvedConflicts";
+				dbConnection.executeUpdate(query);
+	
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public ResultSet getPossibleConflicts() {
+			ResultSet result = null;
+			String query;
+
+		    try {
+				query = "select * from sensors.resolvedconflicts";
+				result =  dbConnection.executeQueryOpenStatement(query);		
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			return result;
+		}
+		
+		@Override
+		public ResultSet getPossibleResults() {
+			ResultSet Rresult = null;
+			String query;
+
+		    try {
+				query = "select * from sensors.results";
+				Rresult =  dbConnection.executeQueryOpenStatement(query);		
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			return Rresult;
+		}
+
+}

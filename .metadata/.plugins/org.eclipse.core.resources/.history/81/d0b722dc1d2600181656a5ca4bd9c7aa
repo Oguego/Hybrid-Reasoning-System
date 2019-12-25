@@ -1,0 +1,209 @@
+package edu.casetools.icase.mreasoner.core.elements.time.absolute;
+
+import java.util.Calendar;
+
+public class TimeOfDay {
+	 public final int EMPTY_DEFAULT       = 0;
+	 private int  hour;
+	 private int  minute;
+	 private int  second;
+	 private long time_of_day;
+	 
+	 private boolean  emptyHour;
+	 private boolean  emptyMinute;
+	 private boolean  emptySecond;
+	 private boolean  emptyTime_of_day;
+	 
+	public TimeOfDay(){
+		  	this.hour   	 = EMPTY_DEFAULT;
+		 	this.minute 	 = EMPTY_DEFAULT;
+		 	this.second 	 = EMPTY_DEFAULT;
+			this.time_of_day = EMPTY_DEFAULT;
+		  	this.emptyHour   	 = true;
+		 	this.emptyMinute 	 = true;
+		 	this.emptySecond 	 = true;
+		 	
+	}
+	 
+	public int getHour() {
+			return hour;
+	}
+
+	public void setHour(int hour) {
+		this.hour 			 = hour;
+		this.time_of_day 	 = this.getTimeOfDayInSeconds();
+	  	this.emptyHour   	 = false;
+	}
+	
+	public void setEmptyHour() {
+		this.hour 			 = EMPTY_DEFAULT;
+		this.time_of_day 	 = this.getTimeOfDayInSeconds();
+	  	this.emptyHour   	 = true;
+	}
+
+	public int getMinute() {
+		return minute;
+	}
+
+	public void setMinute(int minute) {
+		this.minute 		 = minute;
+		this.time_of_day 	 = this.getTimeOfDayInSeconds();
+	  	this.emptyMinute   	 = false;
+	}
+	
+	public void setEmptyMinute() {
+		this.minute 		 = EMPTY_DEFAULT;
+		this.time_of_day 	 = this.getTimeOfDayInSeconds();
+	  	this.emptyMinute   	 = true;
+	}
+
+	public int getSecond() {
+		return second;
+	}
+
+	public void setSecond(int second) {
+		this.second 		 = second;
+		this.time_of_day 	 = this.getTimeOfDayInSeconds();
+	  	this.emptySecond   	 = false;
+	}
+	
+	public void setEmptySecond() {
+		this.second = EMPTY_DEFAULT;
+		this.time_of_day = this.getTimeOfDayInSeconds();
+	  	this.emptySecond   	 = true;
+	}
+	
+	public long getTime_of_day() {
+		return time_of_day;
+	}
+	public void setTime_of_day(long time_of_day) {
+		this.time_of_day = time_of_day;
+		this.hour        = this.getHourFromTimeOfDay();
+		this.minute      = this.getMinuteFromTimeOfDay();
+		this.second      = this.getSecondFromTimeOfDay();
+	}
+	
+	public void setEmptyTime_of_day() {
+		this.time_of_day = EMPTY_DEFAULT;
+	}
+	
+
+	public long getTimeOfDayInSeconds(){	
+		return (hour*3600) + (minute*60) + second;
+	}
+	
+	private int getHourFromTimeOfDay(){	
+		return (int) (time_of_day/3600);
+	}
+	
+	private int getMinuteFromTimeOfDay(){
+		int min = (int) ((time_of_day/60) - (getHourFromTimeOfDay() * 60));
+		return min;
+	}
+	
+	private int getSecondFromTimeOfDay(){	
+		return (int) time_of_day - (getHourFromTimeOfDay()*3600) - (getMinuteFromTimeOfDay()*60);
+	}
+
+	public boolean isEmptyHour() {
+		return emptyHour;
+	}
+
+	public boolean isEmptyMinute() {
+		return emptyMinute;
+	}
+
+	public boolean isEmptySecond() {
+		return emptySecond;
+	}
+
+	public boolean isEmptyTime_of_day() {
+		return emptyTime_of_day;
+	}
+	
+	public boolean isEmpty(){
+		return (emptyHour && emptyMinute && emptySecond);
+	}
+
+	public Calendar setValuesIntoCalendar(Calendar calendar){
+		//System.out.println(calendar.get(Calendar.DAY_OF_MONTH)+"/"+calendar.get(Calendar.MONTH)+"/"+calendar.get(Calendar.YEAR)+
+		//		" - "+calendar.get(Calendar.HOUR)+":"+calendar.get(Calendar.MINUTE)+":"+calendar.get(Calendar.SECOND));
+		if(!this.emptyHour){
+			int am_pm = calendar.get(Calendar.AM_PM);
+			//System.out.println("HOUR+ "+(hour+(12*am_pm)));
+			calendar.set(Calendar.HOUR,   hour + (12*am_pm)  );
+		}
+
+		//System.out.println(calendar.get(Calendar.DAY_OF_MONTH)+"/"+calendar.get(Calendar.MONTH)+"/"+calendar.get(Calendar.YEAR)+
+		//		" - "+calendar.get(Calendar.HOUR)+":"+calendar.get(Calendar.MINUTE)+":"+calendar.get(Calendar.SECOND));
+		if(!this.emptyMinute) 		calendar.set(Calendar.MINUTE, minute );
+		//System.out.println(calendar.get(Calendar.DAY_OF_MONTH)+"/"+calendar.get(Calendar.MONTH)+"/"+calendar.get(Calendar.YEAR)+
+		//		" - "+calendar.get(Calendar.HOUR)+":"+calendar.get(Calendar.MINUTE)+":"+calendar.get(Calendar.SECOND));
+		if(!this.emptySecond) 	    calendar.set(Calendar.SECOND, second );
+		//System.out.println(calendar.get(Calendar.DAY_OF_MONTH)+"/"+calendar.get(Calendar.MONTH)+"/"+calendar.get(Calendar.YEAR)+
+		//		" - "+calendar.get(Calendar.HOUR)+":"+calendar.get(Calendar.MINUTE)+":"+calendar.get(Calendar.SECOND));
+		return calendar;
+	}
+	
+	public Calendar setValuesIntoCalendar_LocalAM_PM(Calendar calendar){
+	
+		if(!this.emptyHour) {
+			if(hour > 12) {
+				calendar.set(Calendar.HOUR, hour-12);
+				calendar.set(Calendar.AM_PM, Calendar.PM);
+			}else{
+				calendar.set(Calendar.HOUR,   hour  );
+				calendar.set(Calendar.AM_PM, Calendar.AM);
+			}
+		}
+		
+		if(!this.emptyMinute) 		calendar.set(Calendar.MINUTE, minute );
+		//System.out.println("HOUR"+hour);
+		
+		if(!this.emptySecond) 	    calendar.set(Calendar.SECOND, second );
+		
+		return calendar;
+	}
+
+	public void print() {
+		if(!isEmptyHour()){
+			if(hour<10)	System.out.print("0"+hour+":");
+			else 	System.out.print(""+hour+":");
+		}
+		
+		if(!isEmptyMinute()){
+			if(minute<10)	System.out.print("0"+minute+":");
+			else 	System.out.print(""+minute+":");
+		}
+		
+		if(!isEmptySecond()){
+			if(second<10)	System.out.print("0"+second);
+			else 	System.out.print(""+second);
+		}				
+		
+	}
+	
+	//get time as a String
+	public String getTimeString() {
+		String time = "";
+		if(!isEmptyHour()){
+			if(hour<10)	time = "0"+hour+":";
+			else 	time=""+hour+":";
+		}
+		
+		if(!isEmptyMinute()){
+			if(minute<10)	time+="0"+minute+":";
+			else 	time+=""+minute+":";
+		}
+		
+		if(!isEmptySecond()){
+			if(second<10)	time+="0"+second;
+			else 	time+=""+second;
+		}
+		
+		return time;
+		
+	}
+	
+	 
+}

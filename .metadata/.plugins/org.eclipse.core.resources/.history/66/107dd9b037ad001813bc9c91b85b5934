@@ -1,0 +1,99 @@
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JTextArea;
+
+import org.eclipse.swt.events.SelectionEvent;
+
+import edu.casetools.icase.mreasoner.gui.Main;
+
+import javax.swing.JButton;
+import java.awt.BorderLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JPanel;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.BoxLayout;
+import javax.swing.JSplitPane;
+import javax.swing.JTextField;
+
+public class HybridMain {
+
+	private JFrame frame;
+	private JTextField textField;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					HybridMain window = new HybridMain();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public HybridMain() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame();
+		frame.setBounds(100, 100, 450, 300);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		
+		JMenuBar menuBar = new JMenuBar();
+		frame.setJMenuBar(menuBar);
+		
+		JMenu mnFile = new JMenu("File");
+		menuBar.add(mnFile);
+		
+		JMenu mnHelp = new JMenu("Help");
+		menuBar.add(mnHelp);
+		
+		JMenu mnExit = new JMenu("Exit");
+		menuBar.add(mnExit);
+		frame.getContentPane().setLayout(null);
+		
+		JPanel panel = new JPanel();
+		panel.setBounds(10, 196, 141, 33);
+		frame.getContentPane().add(panel);
+		
+		JButton btnMreasoner = new JButton("MReasoner");
+		panel.add(btnMreasoner);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBounds(161, 11, 108, 218);
+		frame.getContentPane().add(panel_1);
+		
+		textField = new JTextField();
+		panel_1.add(textField);
+		textField.setColumns(10);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBounds(279, 196, 145, 33);
+		frame.getContentPane().add(panel_2);
+		
+		JButton btnArgumentationSystem = new JButton("Argumentation System");
+		btnArgumentationSystem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		panel_2.add(btnArgumentationSystem);
+	}
+}

@@ -1,0 +1,160 @@
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JTextArea;
+
+import org.eclipse.swt.events.SelectionEvent;
+
+import edu.casetools.icase.mreasoner.gui.Main;
+
+import javax.swing.JButton;
+import java.awt.BorderLayout;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.awt.event.ActionEvent;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JPanel;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.BoxLayout;
+import javax.swing.JSplitPane;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.JScrollBar;
+import javax.swing.JSlider;
+import java.awt.TextArea;
+import java.awt.Toolkit;
+
+import javax.swing.JTable;
+
+public class HybridMain {
+
+	private JFrame frame;
+	private JTable table;
+	
+	
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					HybridMain window = new HybridMain();
+					window.frame.setVisible(true);
+					
+					//window.frame.setAlwaysOnTop(true); //always ontop
+					window.frame.setResizable(true); //resizeable
+					// initComponents();
+					Toolkit tk = Toolkit.getDefaultToolkit();
+						int xsize = (int) tk.getScreenSize().getWidth();
+						int ysize = (int) tk.getScreenSize().getHeight();
+						window.frame.setSize(xsize, ysize);
+					
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			}
+		});
+		
+		
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public HybridMain() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		
+		frame = new JFrame();
+		//frame.setBounds(100, 100, 543, 355);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		
+		JMenuBar menuBar = new JMenuBar();
+		frame.setJMenuBar(menuBar);
+		
+		JMenu mnFile = new JMenu("File");
+		menuBar.add(mnFile);
+		
+		JMenu mnHelp = new JMenu("Help");
+		menuBar.add(mnHelp);
+		
+		JMenu mnExit = new JMenu("Exit");
+		menuBar.add(mnExit);
+		frame.getContentPane().setLayout(null);
+		
+		JPanel panel = new JPanel();
+		panel.setBounds(10, 165, 132, 49);
+		frame.getContentPane().add(panel);
+		
+		JButton btnMreasoner = new JButton("MReasoner");
+		btnMreasoner.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Main.main(new String[1]);
+			}
+		});
+		panel.add(btnMreasoner);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBounds(501, 152, 145, 33);
+		frame.getContentPane().add(panel_2);
+		
+		JButton btnArgumentationSystem = new JButton("Argumentation System");
+		btnArgumentationSystem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		panel_2.add(btnArgumentationSystem);
+		
+		TextArea textArea_1 = new TextArea();
+		textArea_1.setBounds(225, 10, 201, 89);
+		frame.getContentPane().add(textArea_1);
+		
+		//String pilote = "com.mysql.jdbc.Driver";
+		//jComboBoxType.addItemListener(new ItemState());
+		//jComboBoxMenaces.addItemListener(new ItemState());
+		try {
+		    	//Class.forName(pilote); 
+		    	//Connection connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/test","root"," "); 
+			//Statement instruction = connexion.createStatement(); 
+
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conn = DriverManager.getConnection( "jdbc:mysql://localhost:3306/sensors", "mysql", "123456");
+			Statement stmt = conn.createStatement();
+
+		    String SQL = "select * from sensors.resolvedconflicts";
+			ResultSet rs = stmt.executeQuery(SQL);
+			textArea_1.setText(rs.getString("iteration"));
+
+		    //String a=jTextFieldNom.getText();
+
+
+		    //String SQL = "select description from table where nomcol="+a+";"; 
+		    //ResultSet rs = instruction.executeQuery(SQL);
+
+		    //jTextArea1.setText(rs.getString("description"));                                     
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		table = new JTable();
+		table.setBounds(246, 253, 201, 62);
+		frame.getContentPane().add(table);
+	}
+}

@@ -1,0 +1,32 @@
+package edu.casetools.icase.mreasoner.core.elements.rules;
+
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
+
+	
+public class SameTimeRuleManager{
+
+		
+	public ArrayList<SameTimeRule> rules;
+
+	public SameTimeRuleManager() {
+		rules = new ArrayList<SameTimeRule>();
+	}
+	
+	
+	public void compareRules(){
+//		if(rules.get(0).getAntecedents() == rules.get(1).getAntecedents()){
+
+			infoBox("Hi", "My title bar");			
+//		}
+		
+			
+//		rules.get(0).getConsequence();
+	}
+	
+	public void infoBox(String infoMessage, String titleBar){
+        JOptionPane.showMessageDialog(null, infoMessage, titleBar, JOptionPane.INFORMATION_MESSAGE);
+    }
+
+}

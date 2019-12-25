@@ -1,0 +1,94 @@
+package edu.casetools.icase.mreasoner.core.elements.rules;
+
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import java.util.Vector;
+	
+public class SameTimeRuleManager{
+
+	private Connection conn = null;
+	   private Statement stmt = null;
+	
+	public ArrayList<SameTimeRule> rules;
+
+	public SameTimeRuleManager() {
+		rules = new ArrayList<SameTimeRule>();
+		
+		//Vector Line1 = rules.get(0).getAntecedents(); 
+		//Vector Line2 = rules.get(1).getAntecedents();
+			
+	}
+	
+	
+//	public void compareRules(){
+//	//if(rules.get(0).getAntecedents().get(0).getName().equals(rules.get(2).getAntecedents().get(1).getName()))
+//	if(rules.get(0).getAntecedents().get(0).getName().equals(rules.get(2).getAntecedents().get(1).getName()) &&
+//			rules.get(0).getConsequence().getName().equals(rules.get(2).getConsequence().getName())){
+////			&& (rules.get(0).getConsequence().getName())){
+//		
+//		infoBox("Conflict Detected", "Warning!!!");
+////			System.out.println(rules.get(0).getAntecedents().get(0).getName());
+////			System.out.println(rules.get(1).getAntecedents().get(1).getName());
+//						
+//			//System.out.println("*******LEONARDO*****" + rules.get(1).getConsequence().getName());
+//	}
+//	
+//	else
+//	{	
+//		infoBox("No Conflict", "Warning!!!");	
+//		//rules.get(0).getConsequence();
+//	}
+//	
+//	}
+	
+	
+	   public void connect(){
+		   
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+				conn = DriverManager.getConnection( "jdbc:mysql://localhost:3306/sensors", "mysql", "123456");
+			    stmt = conn.createStatement();
+			} catch (ClassNotFoundException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+	   }
+	   
+	
+	
+	public void compareRules(){
+		int numberConflicts = 0;
+		for(int i=0;i<rules.size();i++){
+			for(int j=i+1;j<rules.size();j++){
+				if(rules.get(i).isConflict(rules.get(j))){ //Save conflicts
+					this.connect();
+					//System.out.println("****Testing*** " + rules.get(i).getConsequence().getName() + " and " + rules.get(j).getConsequence().getName());
+				try{	
+					String query = "INSERT INTO conflict (idConflict, consequnece1, consequnece2, systemTime, occuranceTime)"
+							+" VALUES(null, '"+rules.get(i).getConsequence().getName()+"', '"+rules.get(j).getConsequence().getName()+"', current_timestamp, current_timestamp)";
+					stmt.executeUpdate(query);
+				}
+				 catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				numberConflicts ++;
+				}
+			}
+		}
+		System.out.println("THERE ARE " + numberConflicts + " conflicts.");
+		infoBox("THERE ARE " + numberConflicts + " conflicts.", "Warning: Conflict Detected" );
+	}
+	
+	public void infoBox(String infoMessage, String titleBar){
+        JOptionPane.showMessageDialog(null, infoMessage, titleBar, JOptionPane.INFORMATION_MESSAGE);
+    }
+
+}

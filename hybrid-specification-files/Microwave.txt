@@ -1,0 +1,10 @@
+states(Microwave, lampOn);
+
+is(#Microwave);
+is(Microwave);
+
+holdsAt(Microwave, 0);
+holdsAt(#lampOn, 0);
+
+ssr((#Microwave) -> lampOn);
+ssr((Microwave) -> #lampOn);

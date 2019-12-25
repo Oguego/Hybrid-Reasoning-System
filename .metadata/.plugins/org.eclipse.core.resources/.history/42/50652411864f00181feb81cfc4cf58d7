@@ -1,0 +1,215 @@
+package edu.casetools.icase.argumentation;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
+
+import javax.swing.JOptionPane;
+
+import edu.casetools.icase.mreasoner.core.elements.rules.SameTimeRule;
+
+public class ConflictAnalyser {
+	private SameTimeRule rule1;
+	private SameTimeRule rule2;
+	private String rule1Begin, rule1End, rule2Begin, rule2End, conflictTimeBegin, conflictTimeEnd, display;
+		
+	public ConflictAnalyser(SameTimeRule rule1, SameTimeRule rule2) {
+		this.rule1 = rule1;
+		this.rule2 = rule2;
+//		rule1Begin = rule1.getTemporalOperators().get(0).getSinceValue().getTime_of_day().getTimeString();
+//		rule1End = rule1.getTemporalOperators().get(0).getUntilValue().getTime_of_day().getTimeString();
+//		for(int i=0;i<rule1.getTemporalOperators().size();i++){
+//			if(rule1Begin.compareTo(rule1.getTemporalOperators().get(i).getSinceValue().getTime_of_day().getTimeString())<0){
+//				rule1Begin = rule1.getTemporalOperators().get(i).getSinceValue().getTime_of_day().getTimeString();
+//			}
+//		}
+//		for(int i=0;i<rule1.getTemporalOperators().size();i++){
+//			if(rule1End.compareTo(rule1.getTemporalOperators().get(i).getUntilValue().getTime_of_day().getTimeString())<0){
+//				rule1End = rule1.getTemporalOperators().get(i).getUntilValue().getTime_of_day().getTimeString();
+//			}
+//		}
+//				
+//		rule2Begin = rule2.getTemporalOperators().get(0).getSinceValue().getTime_of_day().getTimeString();
+//		for(int i=0;i<rule2.getTemporalOperators().size();i++){
+//			if(rule2Begin.compareTo(rule2.getTemporalOperators().get(i).getSinceValue().getTime_of_day().getTimeString())<0){
+//				rule2Begin = rule2.getTemporalOperators().get(i).getSinceValue().getTime_of_day().getTimeString();
+//			}
+//		}
+//		rule2End = rule2.getTemporalOperators().get(0).getUntilValue().getTime_of_day().getTimeString();
+//		for(int i=0;i<rule2.getTemporalOperators().size();i++){
+//			if(rule2End.compareTo(rule2.getTemporalOperators().get(i).getUntilValue().getTime_of_day().getTimeString())<0){
+//				rule2End = rule2.getTemporalOperators().get(i).getUntilValue().getTime_of_day().getTimeString();
+//			}
+//		}
+		
+	}	
+
+	public String getConflictTimeBegin() {
+		return conflictTimeBegin;
+	}
+
+	public String getConflictTimeEnd() {
+		return conflictTimeEnd;
+	}
+
+	public boolean isConflict(){
+		//if(rule1.getConsequence().opposite(rule2.getConsequence()) || timeConflict()){
+		if(rule1.getConsequence().opposite(rule2.getConsequence()) ){
+			//setConflicTime();
+			//printRulesTimes();
+			//printConflictTimes();			
+			specificity();
+			return true;
+		}
+		return false;
+	}
+	
+	private void specificity(){
+		int minAntecedents = rule1.getAntecedents().size();
+		int sameAntecedents=0;
+		if(rule1.getAntecedents().size()>rule2.getAntecedents().size()){
+			minAntecedents = rule2.getAntecedents().size();			
+		}
+
+		for(int i=0;i<rule1.getAntecedents().size();i++){
+			for(int j=0;j<rule2.getAntecedents().size();j++){
+				if (rule1.getAntecedents().get(i).equals(rule2.getAntecedents().get(j))){
+					sameAntecedents++;
+				}
+			}
+		}
+		
+		if(sameAntecedents == minAntecedents){
+			if(rule1.getAntecedents().size() != rule2.getAntecedents().size()){
+				if(rule1.getAntecedents().size()==minAntecedents){
+//					rule2.getConsequence().print();
+					display = rule2.getConsequence().getWholeName();
+				}else{
+//					rule1.getConsequence().print();
+					display = rule1.getConsequence().getWholeName();
+				}
+//				System.out.print(" is more informed!!!");
+				display = display + " is more informed!!!";
+			}else{
+				coinToss();
+			}
+		}else{
+//			System.out.println("Specificity cannot solve this conflict!!!");
+			display = "Specificity cannot solve this conflict, Preference will be applied!!!";
+		}
+		
+//		if (rule1.getAntecedents().size()>equals){
+//			if(rule1.getConsequence().getStatus()){
+//			//System.out.println(rule1.getConsequence().getName() + " is more informed");
+//				//infoBox(rule1.getConsequence().getName() + " is more informed", "Conflict Resolved" );
+//				display = (rule1.getConsequence().getName() + " is more informed");
+//			}else{
+//				//System.out.println("!" + rule1.getConsequence().getName() + " is more informed");
+//				//infoBox("!" + rule1.getConsequence().getName() + " is more informed", "Conflict Resolved" );
+//				display = ("!" + rule1.getConsequence().getName() + " is more informed");
+//			}
+//			
+//		}else{
+//			if (rule2.getAntecedents().size()>equals){
+//				if(rule2.getConsequence().getStatus()){
+//					//System.out.println(rule2.getConsequence().getName() + " is more informed");
+////					infoBox(rule2.getConsequence().getName() + " is more informed", "Conflict Resolved" );
+//					display = (rule2.getConsequence().getName() + " is more informed");
+//				}else{
+//					//System.out.println("!" + rule2.getConsequence().getName() + " is more informed");
+////					infoBox("!" + rule2.getConsequence().getName() + " is more informed", "Conflict Resolved" );
+//					display = ("!" + rule2.getConsequence().getName() + " is more informed");
+//				}
+//			}
+//		}
+		
+//		if (rule1.getAntecedents().size() > rule2.getAntecedents().size()) {
+////			System.out.println("Oggy Ante1 " + rule1.getAntecedents().get(equals++).getName());
+//			
+//			System.out.println("Oggy Ante1: ");
+//			for(int i=0;i<rule1.getAntecedents().size();i++){
+//				System.out.println(rule1.getAntecedents().get(i).getName());
+//			}
+//		}else{
+////			System.out.println("Oggy Ante2 " + rule2.getAntecedents().get(equals++).getName());
+//			
+//			System.out.println("Oggy Ante2: ");
+//			for(int i=0;i<rule2.getAntecedents().size();i++){
+//				System.out.println(rule2.getAntecedents().get(i).getName());
+//			}
+//		}
+	}
+		
+	private void preferences(){
+		
+	}
+	
+	private void persistency(){
+		
+	}
+	
+	private void coinToss() {
+		double coin = Math.random()*2;
+		System.out.println("Coin value: " + coin);
+		if (coin<=1){
+//			rule1.getConsequence().print();
+			display = rule1.getConsequence().getWholeName();
+		}else{
+//			rule2.getConsequence().print();
+			display = rule2.getConsequence().getWholeName();
+		}
+//		System.out.print(" was chosen using COIN TOSS!!!");
+		display = display + " was chosen using COIN TOSS, as Specificity and Preferences could not resolve this!!!";
+	}
+
+	private boolean timeConflict() {
+		if((rule1Begin.compareTo(rule2Begin)>0 & rule1Begin.compareTo(rule2End)<0) ||
+				(rule1End.compareTo(rule2Begin)>0 & rule1End.compareTo(rule2End)<0) ||
+				(rule2Begin.compareTo(rule1Begin)>0 & rule2Begin.compareTo(rule1End)<0) ||
+				(rule2End.compareTo(rule1Begin)>0 & rule2End.compareTo(rule1End)<0) ||
+				(rule1Begin.equals(rule2Begin) & rule1End.equals(rule2End))){			
+			return true;
+		}
+		return false;
+	}
+
+	private void setConflicTime() {
+		conflictTimeBegin = rule1Begin;
+		if(conflictTimeBegin.compareTo(rule2Begin)<0){
+			conflictTimeBegin = rule2Begin;
+		}
+		
+		conflictTimeEnd = rule1End;
+		if(conflictTimeEnd.compareTo(rule2End)>0){
+			conflictTimeEnd = rule2End;
+		}
+	}
+
+//	private void printRulesTimes() {
+//		System.out.println(rule1.getTemporalOperators().size() + " - " + rule2.getTemporalOperators().size());
+//		System.out.println("Rule 1 Time: " + rule1Begin + " - " + rule1End);
+//		System.out.println("Rule 2 Time: " + rule2Begin + " - " + rule2End);
+//	}
+//	
+//	private void printConflictTimes(){
+//		System.out.println("Conflict time: " + conflictTimeBegin + " - " + conflictTimeEnd);
+//	}
+	public void infoBox(String infoMessage, String titleBar){
+        JOptionPane.showMessageDialog(null, infoMessage, titleBar, JOptionPane.INFORMATION_MESSAGE);
+    }
+	
+	public String getDisplay(){
+		return display;
+	}
+
+	public SameTimeRule getRule1() {
+		return rule1;
+	}
+
+	public SameTimeRule getRule2() {
+		return rule2;
+	}
+	
+	
+	
+}

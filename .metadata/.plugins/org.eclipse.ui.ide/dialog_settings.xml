@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+		<item value="C:\Users\Chimezie\MReasonerLatest_Fast\HybridReasoningSystem"/>
+	</list>
+	<section name="CleanDialogSettings">
+		<item value="662" key="DIALOG_WIDTH"/>
+		<item value="true" key="BUILD_ALL"/>
+		<item value="false" key="TOGGLE_SELECTED"/>
+		<item value="498" key="DIALOG_HEIGHT"/>
+		<item value="504" key="DIALOG_X_ORIGIN"/>
+		<item value="111" key="DIALOG_Y_ORIGIN"/>
+		<item value="true" key="BUILD_NOW"/>
+	</section>
+	<section name="ExternalProjectImportWizard">
+		<item value="false" key="WizardProjectsImportPage.STORE_NESTED_PROJECTS"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
+		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="C:\Users\Chimezie\RealAI-JoseLeo\MReasonerLatest_Fast-AI\mreasoner-gui"/>
+			<item value="C:\Users\Chimezie\RealAI-JoseLeo\MReasonerLatest_Fast-AI\mreasoner"/>
+			<item value="C:\Users\Chimezie\RealAI-JoseLeo\MReasonerLatest_Fast-AI\mreasoner-core"/>
+			<item value="C:\Users\Chimezie\RealAI-JoseLeo\MReasonerLatest_Fast-AI\HybridReasoningSystem"/>
+			<item value="C:\Users\Chimezie\MReasoner_Argumentation_Hybrid_TescoAPI\HybridReasoningSystem"/>
+			<item value="C:\Users\Chimezie\MReasonerLatest_Fast\HybridReasoningSystem"/>
+			<item value="C:\Users\Chimezie\MReasonerLatest_Fast\Real AI Mreasoner\MReasonerLatestV2"/>
+			<item value="C:\Users\Chimezie\MReasoner_Argumentation_Hybrid_TescoAPI"/>
+			<item value="C:\Users\Chimezie\MReasonerLatest_Fast"/>
+			<item value="C:\Users\Chimezie\MReasonerLatest_Fast_Previous"/>
+			<item value="C:\Users\Chimezie\Desktop\MReasonerLatest_Fast 3-12-2018"/>
+			<item value="C:\Users\Chimezie\MReasonerLatest_TimeOperator\mreasoner\mreasoner-master"/>
+			<item value="C:\Users\Chimezie\MReasonerLatest_TimeOperator"/>
+			<item value="C:\Users\Chimezie\MReasonerLatest_Fast\GetWeatherData"/>
+			<item value="C:\Users\Chimezie\MReasonerLatest_"/>
+			<item value="C:\Users\Chimezie\MReasonerLatest_Fast_Previous\HybridReasoningSystem"/>
+			<item value="C:\Users\Chimezie\MReasonerLatest_Fast\HybridMain"/>
+			<item value="C:\Users\Chimezie\MReasonerLatest_Fast\mreasoner-gui"/>
+			<item value="C:\Users\Chimezie\MReasonerLatest_Fast\mreasoner-core"/>
+			<item value="C:\Users\Chimezie\MReasonerLatest_Fast\mreasoner"/>
+		</list>
+		<list key="WizardProjectsImportPage.STORE_ARCHIVES">
+			<item value=""/>
+		</list>
+	</section>
+	<section name="WORKBENCH_SETTINGS">
+		<list key="ENABLED_TRANSFERS">
+		</list>
+	</section>
+	<section name="NewWizardAction">
+		<item value="org.eclipse.wb.rcp.project.wizard" key="NewWizardSelectionPage.STORE_SELECTED_ID"/>
+		<list key="NewWizardSelectionPage.STORE_EXPANDED_CATEGORIES_ID">
+			<item value="org.eclipse.wb"/>
+			<item value="org.eclipse.wb/org.eclipse.wb.rcp"/>
+		</list>
+	</section>
+	<section name="ChooseWorkspaceDialogSettings">
+		<item value="381" key="DIALOG_X_ORIGIN"/>
+		<item value="98" key="DIALOG_Y_ORIGIN"/>
+	</section>
+</section>

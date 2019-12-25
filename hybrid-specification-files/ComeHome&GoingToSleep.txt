@@ -1,0 +1,25 @@
+states(CorridorMovement, BedRoomLight, CorridorLight, BigPadIdle, FrontDoorMovement, BedRoomMovement, EntranceDoor);
+
+is(CorridorMovement);
+is(#CorridorMovement);
+is(#CorridorLight);
+is(CorridorLight);
+is(#BigPadIdle);
+is(BigPadIdle);
+is(FrontDoorMovement);
+is(#FrontDoorMovement);
+is(BedRoomMovement);
+is(#BedRoomMovement);
+is(EntranceDoor);
+
+holdsAt(#CorridorMovement, 0);
+holdsAt(#BedRoomLight, 0);
+holdsAt(#CorridorLight, 0);
+holdsAt(#EntranceDoor, 0);
+holdsAt(BigPadIdle, 0);
+holdsAt(#BedRoomMovement, 0);
+
+ssr((EntranceDoor ^ FrontDoorMovement) -> CorridorLight);
+ssr((#FrontDoorMovement) -> #CorridorLight);
+ssr((BedRoomMovement ^ BigPadIdle) -> BedRoomLight);
+ssr((#BedRoomMovement ^ [-][30s.]#BigPadIdle) -> #BedRoomLight);

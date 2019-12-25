@@ -1,0 +1,17 @@
+states(lampOn, BigPadIdle, prefEntertainment, prefEconomy);
+
+is(#BigPadIdle);
+is(BigPadIdle);
+is(prefEconomy);
+is(prefEntertainment);
+
+holdsAt(BigPadIdle, 0);
+holdsAt(#lampOn, 0);
+holdsAt(prefEconomy, 0);
+holdsAt(prefEntertainment, 0);
+
+
+ssr((#BigPadIdle ^ prefEconomy) -> lampOn);
+ssr((#BigPadIdle ^ prefEntertainment) -> #lampOn);
+ssr((BigPadIdle ^ prefEconomy) -> #lampOn);
+ssr((BigPadIdle ^ prefEntertainment) -> lampOn);

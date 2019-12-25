@@ -1,0 +1,10 @@
+states(BigPadIdle, lampOn);
+
+is(#BigPadIdle);
+is(BigPadIdle);
+
+holdsAt(BigPadIdle, 0);
+holdsAt(#lampOn, 0);
+
+ssr((BigPadIdle) -> #lampOn);
+ssr((#BigPadIdle) -> lampOn);

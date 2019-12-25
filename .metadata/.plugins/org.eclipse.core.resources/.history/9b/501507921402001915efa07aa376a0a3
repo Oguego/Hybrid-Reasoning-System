@@ -1,0 +1,284 @@
+package QueryData;
+
+//import java.io.ByteArrayOutputStream;
+//import java.io.PrintStream;
+
+// // This sample uses the Apache HTTP client from HTTP Components (http://hc.apache.org/httpcomponents-client-ga/)
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Date;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import DB_Connection.MySQL_Connection;
+
+public class OccurrenceDetector {
+	private static String[] names = {"Occ_HighSugarDetected", "Occ_CakeAvaliable"};
+	
+	public static boolean detectOcurrance(String keyword){
+		switch(keyword){
+			case "Occ_HighSugarDetected":
+				return detectHighSugar();
+			case "Occ_CakeAvaliable":
+				return detectCakeAvaliability(); ///
+			default:
+				System.out.println("No match with Occurrance Keyword");
+				return false;
+		}
+	}
+	
+	public boolean checkNeedForOcurranceDetector(String name){
+		String[] names = {"Occ_HighSugarDetected", "Occ_CakeAvaliable"};
+		for(int i=0;i<names.length;i++){
+			if(names[i].equals(name)){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static boolean detectHighSugar(){
+		HttpClient httpclient = HttpClients.createDefault();
+
+		try{
+			//URIBuilder builder = new URIBuilder("https://dev.tescolabs.com/grocery/products/?query={query}&offset={offset}&limit={limit}");
+			URIBuilder builder = new URIBuilder("https://dev.tescolabs.com/grocery/products/?query=cake&offset=0&limit=10");
+
+			URI uri = builder.build();
+			HttpGet request = new HttpGet(uri);
+			//request.setHeader("Ocp-Apim-Subscription-Key", "{subscription key}");
+			request.setHeader("Ocp-Apim-Subscription-Key", "9b741cf2c310474591848f545707511b");
+
+			// Request body
+			//	            StringEntity reqEntity = new StringEntity("{body}");
+			//	            ((HttpResponse) request).setEntity(reqEntity);
+			//request.setEntity(reqEntity);
+
+			HttpResponse response = httpclient.execute(request);
+			HttpEntity entity = response.getEntity();
+
+			if (entity != null){
+				//System.out.println(EntityUtils.toString(entity));
+			}
+			String TescoData = EntityUtils.toString(entity);
+
+			//ArrayList<Products> groceries = new ArrayList<Products>();
+
+			Products td = null;
+			String sugarResult = null;
+			try{
+				JSONObject chocolateCheck = new JSONObject(TescoData);
+				JSONObject UK = chocolateCheck.getJSONObject("uk");   
+				JSONObject GHS = UK.getJSONObject("ghs");
+				JSONObject Products = GHS.getJSONObject("products");
+				JSONArray jsonArray = Products.getJSONArray("results");
+				System.out.println(jsonArray.length());
+
+				for (int i = 0; i < jsonArray.length(); i++) {
+					JSONObject product = jsonArray.getJSONObject(i);
+
+					try{
+						//System.out.println(product.get("tpnb")+ "%%%%%%" + product.get("description"));	        	    	
+						int Product_ID = product.getInt("id");
+						String Product_Name = product.getString("name");
+						String Super_Department = product.getString("superDepartment");
+						String Department = product.getString("department");
+						String Description = "";
+						if(product.has("description")){
+							JSONArray desc_array = product.getJSONArray("description");		                	
+							for(int j=0;j<desc_array.length();j++){
+								Description = Description + "/" + desc_array.getString(j);
+							}
+						}
+						String old = "\"";
+						String newC = "\'";
+						while(Description.indexOf(old)!=-1){
+							int pos = Description.indexOf(old);
+							Description = Description.substring(0,pos) + Description.substring(pos + 1);
+						}
+						int Content_Quantity = product.getInt("ContentsQuantity");
+						double Price = product.getDouble("price"); 
+						double Unit_Price = product.getDouble("unitprice");
+						java.util.Date Retrieved_Date = new java.util.Date();
+						//System.out.println("INSERTED..............");
+						td = new Products (Product_ID, Product_Name, Super_Department, Department, Description, Content_Quantity,
+								Price, Unit_Price, Retrieved_Date);
+						//		        	    	td.print();
+
+						//if (td.Department.indexOf("Chocolate") != -1 && td.Description.indexOf("sugar")  != -1){
+						if(td.Product_Name.indexOf("sugar")  != -1 || td.Super_Department.indexOf("sugar")  != -1 || td.Department.indexOf("sugar")  != -1 || td.Description.indexOf("sugar")  != -1){
+//							 //Create a stream to hold the output
+//									        	    	    ByteArrayOutputStream sugarCheck = new ByteArrayOutputStream();
+//									        	    	    PrintStream ps = new PrintStream(sugarCheck);
+//									        	    	    // IMPORTANT: Save the old System.out!
+//									        	    	    PrintStream old1 = System.out;
+//									        	    	    // Tell Java to use your special stream
+//									        	    	    System.setOut(ps);
+//									        	    	    // Print some output: goes to your special stream
+//									        	    	    System.out.println("HighSugarDetected");
+//									        	    	    // Put things back
+//									        	    	    System.out.flush();
+//									        	    	    System.setOut(old1);
+//									        	    	    // Show what happened
+//									        	    	    System.out.println(sugarCheck.toString() + "On this Cake" );
+							System.out.println("High sugar detected on these/this Cake(s)" );
+
+
+							MySQL_Connection conn = new MySQL_Connection();
+							conn.insertGloceris(td);
+							return true;		        	    		
+
+						}
+					}
+
+					catch(JSONException e)
+					{
+						e.printStackTrace();
+					}
+
+				}
+
+			}
+
+
+			catch (Exception e)
+			{
+				System.out.println(e.getMessage());
+			}
+
+
+		}
+
+		catch (Exception e)
+		{
+			System.out.println(e.getMessage());
+		}
+
+		System.out.println("HighSugar NOT Detected");
+		return false;
+
+	}
+	
+	public static boolean detectCakeAvaliability(){
+		HttpClient httpclient1 = HttpClients.createDefault();
+		try{
+			//URIBuilder builder = new URIBuilder("https://dev.tescolabs.com/grocery/products/?query={query}&offset={offset}&limit={limit}");
+			URIBuilder builder = new URIBuilder("https://dev.tescolabs.com/grocery/products/?query=cake&offset=0&limit=1000");
+
+			URI uri = builder.build();
+			HttpGet request = new HttpGet(uri);
+			//request.setHeader("Ocp-Apim-Subscription-Key", "{subscription key}");
+			request.setHeader("Ocp-Apim-Subscription-Key", "9b741cf2c310474591848f545707511b");
+
+			// Request body
+			//	            StringEntity reqEntity = new StringEntity("{body}");
+			//	            ((HttpResponse) request).setEntity(reqEntity);
+			//request.setEntity(reqEntity);
+
+			HttpResponse response = httpclient1.execute(request);
+			HttpEntity entity = response.getEntity();
+			
+
+			if (entity != null){
+				//System.out.println(EntityUtils.toString(entity));
+			}
+			String TescoData = EntityUtils.toString(entity);
+
+
+//			Products td = null;
+//			try{
+//				JSONObject chocolateCheck = new JSONObject(TescoData);
+//				JSONObject UK = chocolateCheck.getJSONObject("uk");   
+//				JSONObject GHS = UK.getJSONObject("ghs");
+//				JSONObject Products = GHS.getJSONObject("products");
+//				JSONArray jsonArray = Products.getJSONArray("results");
+//				System.out.println(jsonArray.length());
+//
+//				for (int i = 0; i < jsonArray.length(); i++) {
+//					JSONObject product = jsonArray.getJSONObject(i);
+//
+//					try{        	    	
+//						int Product_ID = product.getInt("id");
+//						String Product_Name = product.getString("name");
+//						String Super_Department = product.getString("superDepartment");
+//						String Department = product.getString("department");
+//						String Description = "";
+//						if(product.has("description")){
+//							JSONArray desc_array = product.getJSONArray("description");		                	
+//							for(int j=0;j<desc_array.length();j++){
+//								Description = Description + "/" + desc_array.getString(j);
+//							}
+//						}
+//						String old = "\"";
+//						String newC = "\'";
+//						while(Description.indexOf(old)!=-1){
+//							int pos = Description.indexOf(old);
+//							Description = Description.substring(0,pos) + Description.substring(pos + 1);
+//						}
+//						int Content_Quantity = product.getInt("ContentsQuantity");
+//						double Price = product.getDouble("price"); 
+//						double Unit_Price = product.getDouble("unitprice");
+//						java.util.Date Retrieved_Date = new java.util.Date();
+//						//System.out.println("INSERTED..............");
+//						td = new Products (Product_ID, Product_Name, Super_Department, Department, Description, Content_Quantity,
+//								Price, Unit_Price, Retrieved_Date);
+//						//td.print();
+//
+//						//if (td.Department.indexOf("Chocolate") != -1 && td.Description.indexOf("sugar")  != -1){
+//						if(td.Product_Name.indexOf("cake")  != -1 || td.Super_Department.indexOf("cake")  != -1 || td.Department.indexOf("cake")  != -1 || td.Description.indexOf("cake")  != -1){
+//						System.out.println("Cake IS IN STORE");
+////
+////
+////							MySQL_Connection conn = new MySQL_Connection();
+////							conn.insertGloceris(td);
+////							return true;		        	    		
+////
+//						}
+//					}
+//
+//					catch(JSONException e)
+//					{
+//						e.printStackTrace();
+//					}
+//
+//				}
+
+//			}
+//
+//
+//			catch (Exception e)
+//			{
+//				System.out.println(e.getMessage());
+//			}
+//
+//
+		}
+		catch (Exception e)
+		{
+			System.out.println(e.getMessage());
+		}
+		System.out.println("Cake NOT FOUND IN STORE");
+		return false;
+		
+	}
+	    
+	    public static void main(String[] args){
+	    	if(detectCakeAvaliability()){
+	    		System.out.println("Cake detected");
+	    	}else{
+	    		System.out.println("Cake Not detected");
+	    	}
+	    }
+	    
+
+	    
+}

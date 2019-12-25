@@ -1,0 +1,34 @@
+package Main;
+
+import edu.casetools.icase.mreasoner.core.elements.rules.SameTimeRuleManager;
+
+import javax.swing.JOptionPane;
+
+public class Main {
+
+	public void displayBox(String displayMessage, String titleMessage){
+		JOptionPane.showMessageDialog(null, displayMessage, titleMessage, JOptionPane.YES_NO_OPTION);
+	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		
+		displayBox ("Argumentation Started ", "Start" );
+		
+		//displayBox("There is only " + numberConflicts + " conflict.", "Warning: Conflict Detected" );
+		
+		 SameTimeRuleManager ruleManager = new SameTimeRuleManager();
+		
+	    if(ruleManager.rules.size()>1){
+	    	System.out.println("Rules so far:");
+	    	for(int i=0;i<ruleManager.rules.size();i++){
+	    		ruleManager.rules.get(i).printRule();    	
+	    	}
+	    	ruleManager.compareRules();
+	    }
+
+	}
+
+	
+}

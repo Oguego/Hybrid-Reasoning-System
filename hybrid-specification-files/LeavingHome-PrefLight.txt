@@ -1,0 +1,19 @@
+states(Movement, Sleeping, OnBed, LightsOn, Home, Do_LeavingHome, Occ_LeftHome, SystemTurnsLightOff, prefLightOn);
+
+is(Do_LeavingHome);
+is(OnBed);
+
+holdsAt(Movement, 0);
+holdsAt(#Sleeping, 0);
+holdsAt(#OnBed, 0);
+holdsAt(LightsOn, 0);
+holdsAt(#Occ_LeftHome, 0);
+holdsAt(Do_LeavingHome, 0);
+holdsAt(SystemTurnsLightOff, 0);
+
+ssr((Do_LeavingHome) -> Occ_LeftHome);
+ssr((Occ_LeftHome ) -> #Movement);
+ssr(([-][900s.]#Movement ^ [-][900s.]OnBed) -> #Home);
+ssr((#Home) -> #prefLightOn);
+ssr((#prefLightOn) -> SystemTurnsLightOff);
+ssr((SystemTurnsLightOff) -> #LightsOn);

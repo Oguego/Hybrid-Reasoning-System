@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="edu.casetools.icase.mreasoner.database.core.connection.DBConnection"/>
+<fullyQualifiedTypeName name="edu.casetools.icase.mreasoner.myactuators.OutsideActuator"/>
+<fullyQualifiedTypeName name="edu.casetools.icase.mreasoner.myactuators.OutsideConfigs"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="java.security.Timestamp"/>
+<fullyQualifiedTypeName name="edu.casetools.icase.mreasoner.database.core.operations.DatabaseOperations"/>
+<fullyQualifiedTypeName name="edu.casetools.icase.mreasoner.actuators.device.ActuatorDB"/>
+<fullyQualifiedTypeName name="java.net.HttpURLConnection"/>
+<fullyQualifiedTypeName name="java.sql.Timestamp"/>
+<fullyQualifiedTypeName name="java.io.OutputStreamWriter"/>
+<fullyQualifiedTypeName name="com.sshtools.util.Arrays"/>
+<fullyQualifiedTypeName name="edu.casetools.icase.mreasoner.configs.data.MConfigs"/>
+<fullyQualifiedTypeName name="edu.casetools.icase.mreasoner.core.elements.time.absolute.Date"/>
+<fullyQualifiedTypeName name="edu.casetools.dcase.m2nusmv.data.elements.Time"/>
+<fullyQualifiedTypeName name="java.text.DateFormat"/>
+<fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.sql.ResultSet"/>
+<fullyQualifiedTypeName name="edu.casetools.icase.mreasoner.core.elements.rules.SameTimeRule"/>
+<fullyQualifiedTypeName name="edu.casetools.icase.mreasoner.core.MSpecification"/>
+<fullyQualifiedTypeName name="edu.casetools.icase.mreasoner.core.elements.MStatus"/>
+<fullyQualifiedTypeName name="javax.swing.JPanel"/>
+<fullyQualifiedTypeName name="javax.swing.JScrollPane"/>
+<fullyQualifiedTypeName name="javax.swing.table.DefaultTableCellRenderer"/>
+<fullyQualifiedTypeName name="java.awt.event.MouseEvent"/>
+<fullyQualifiedTypeName name="java.util.Vector"/>
+<fullyQualifiedTypeName name="javax.swing.table.DefaultTableModel"/>
+<fullyQualifiedTypeName name="java.awt.event.MouseAdapter"/>
+<fullyQualifiedTypeName name="javax.swing.JLabel"/>
+<fullyQualifiedTypeName name="edu.casetools.icase.hybrid.HybridMain"/>
+<fullyQualifiedTypeName name="edu.casetools.icase.argumentation.RulesCompiler"/>
+<fullyQualifiedTypeName name="edu.casetools.icase.mreasoner.gui.Main"/>
+<fullyQualifiedTypeName name="edu.casetools.icase.mreasoner.database.core.implementations.PostgreSQL_DatabaseOperations"/>
+<fullyQualifiedTypeName name="java.sql.Connection"/>
+<fullyQualifiedTypeName name="java.beans.Statement"/>
+<fullyQualifiedTypeName name="java.sql.Statement"/>
+</qualifiedTypeNameHistroy>

@@ -1,0 +1,23 @@
+states(BuyCake, Diabetic, CakeOnSales, Sugar, Occ_CakeAvaliable, Occ_SugarDetected, Occ_SystemAdvicesBuyCake, prefPleasure, prefHealth);
+
+is(Occ_CakeAvaliable);
+is(Occ_SugarDetected);
+is(Diabetic);
+is(prefPleasure);
+is(prefHealth);
+is(Occ_SystemAdvicesBuyCake);
+
+holdsAt(#BuyCake, 0);
+holdsAt(Diabetic, 0);
+holdsAt(#CakeOnSales, 0);
+holdsAt(#Sugar, 0);
+holdsAt(Occ_CakeAvaliable, 0);
+holdsAt(#Occ_SugarDetected, 0);
+holdsAt(#Occ_SystemAdvicesBuyCake, 0);
+holdsAt(prefHealth, 0);
+holdsAt(prefPleasure, 0);
+
+ssr((Occ_CakeAvaliable) -> CakeOnSales);
+ssr((CakeOnSales ^ prefPleasure) -> Occ_SystemAdvicesBuyCake);
+ssr((Occ_SugarDetected) -> Sugar);
+ssr((Diabetic ^ Sugar ^ CakeOnSales ^ prefHealth) -> #Occ_SystemAdvicesBuyCake);

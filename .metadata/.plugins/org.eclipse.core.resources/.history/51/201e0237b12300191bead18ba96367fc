@@ -1,0 +1,105 @@
+package edu.casetools.icase.mreasoner.gui;
+
+
+import java.util.Vector;
+
+import edu.casetools.icase.mreasoner.configs.data.MConfigs;
+import edu.casetools.icase.mreasoner.gui.controller.Controller;
+import edu.casetools.icase.mreasoner.gui.model.Model;
+import edu.casetools.icase.mreasoner.gui.view.View;
+import edu.casetools.icase.mreasoner.myactuators.LampActuator;
+import edu.casetools.icase.mreasoner.myactuators.LampConfigs;
+import edu.casetools.icase.mreasoner.actuators.device.Actuator;
+
+public class Main {
+	
+	public static void main(String[] args) {
+
+			Vector<Actuator> actuators = new Vector<Actuator>();
+			
+			//Add to the actuators vector your own list of actuators.
+			LampConfigs lampConfigs = new LampConfigs("lampOn");
+			LampConfigs RadioConfigs = new LampConfigs("Radio");
+			LampConfigs SmallLampConfigs = new LampConfigs("SmallLamp");
+			LampConfigs ToiletLightConfigs = new LampConfigs("ToiletLight");
+			LampConfigs BedRoomLightConfigs = new LampConfigs("BedRoomLight");
+			LampConfigs KitchenLightConfigs = new LampConfigs("KitchenLight");
+			LampConfigs KitchenMovementConfigs = new LampConfigs("KitchenMovement");
+			LampConfigs ShowerRoomLightConfigs = new LampConfigs("ShowerRoomLight");
+			LampConfigs LivingRoomLightConfigs = new LampConfigs("LivingRoomLight");
+			//LampConfigs LivingRoomMovementConfigs = new LampConfigs("LivingRoomMovement");
+			//LampConfigs LivingRoomDoorConfigs = new LampConfigs("LivingRoomDoor"); 
+			//LampConfigs BedroomMovementConfigs = new LampConfigs("BedroomMovement");
+			//LampConfigs ToiletMovementConfigs = new LampConfigs("ToiletMovement");
+			//LampConfigs ShowerMovementConfigs = new LampConfigs("ShowerMovement");
+			LampConfigs FrontDoorMovementConfigs = new LampConfigs("FrontDoorMovement");
+			//LampConfigs EntranceDoorConfigs = new LampConfigs("EntranceDoor");
+			//LampConfigs CorridorMovementConfigs =new LampConfigs("CorridorMovement");
+			LampConfigs CorridorLightConfigs = new LampConfigs("CorridorLight");
+			//LampConfigs MS_MotionSensorConfigs = new LampConfigs("MS_MotionSensor");
+			//LampConfigs MS_LightSensorConfigs = new LampConfigs("MS_LightSensor");
+			//LampConfigs BigPadIdleConfigs = new LampConfigs("BigPadIdle");
+			
+			LampActuator lampActuator = new LampActuator(lampConfigs);
+			LampActuator RadioActuator = new LampActuator(RadioConfigs);
+			LampActuator smalllampActuator = new LampActuator(SmallLampConfigs);
+			LampActuator ToiletLightActuator = new LampActuator(ToiletLightConfigs);
+			LampActuator BedRoomLightActuator = new LampActuator(BedRoomLightConfigs);
+			LampActuator KitchenLightActuator = new LampActuator(KitchenLightConfigs);
+			LampActuator KitchenMovementActuator = new LampActuator(KitchenMovementConfigs);
+			LampActuator ShowerRoomLightActuator = new LampActuator(ShowerRoomLightConfigs);
+			LampActuator LivingRoomLightActuator = new LampActuator(LivingRoomLightConfigs);
+			//LampActuator LivingRoomMovementActuator = new LampActuator(LivingRoomMovementConfigs);
+			//LampActuator LivingRoomDoorActuator = new LampActuator(LivingRoomDoorConfigs);
+			//LampActuator BedroomMovementActuator = new LampActuator(BedroomMovementConfigs);
+			//LampActuator ToileMovementActuator = new LampActuator(ToiletMovementConfigs);
+			//LampActuator ShowerMovementActuator = new LampActuator(ShowerMovementConfigs);
+			LampActuator FrontDoorMovementActuator = new LampActuator(FrontDoorMovementConfigs);
+			//LampActuator EntranceDoorActuator = new LampActuator(EntranceDoorConfigs);
+			//LampActuator CorridorMovementActuator = new LampActuator(CorridorMovementConfigs);
+			LampActuator CorridorLightActuator = new LampActuator(CorridorLightConfigs);
+			//LampActuator MS_MotionSensorActuator = new LampActuator(MS_MotionSensorConfigs);
+			//LampActuator MS_LightSensorActuator = new LampActuator(MS_LightSensorConfigs);
+			//LampActuator BigPadIdleActuator = new LampActuator(BigPadIdleConfigs);
+			
+			
+			actuators.add(lampActuator);
+			actuators.add(RadioActuator);
+			actuators.add(smalllampActuator);
+			actuators.add(ToiletLightActuator);
+			actuators.add(BedRoomLightActuator);
+			actuators.add(KitchenLightActuator);
+			//actuators.add(KitchenMovementActuator);
+			actuators.add(ShowerRoomLightActuator);
+			actuators.add(LivingRoomLightActuator);
+			//actuators.add(LivingRoomMovementActuator);
+			//actuators.add(LivingRoomDoorActuator);
+			//actuators.add(BedroomMovementActuator);
+			//actuators.add(ToileMovementActuator);
+			//actuators.add(ShowerMovementActuator);
+			actuators.add(FrontDoorMovementActuator);
+			//actuators.add(EntranceDoorActuator);
+			//actuators.add(CorridorMovementActuator);
+			actuators.add(CorridorLightActuator);
+			//actuators.add(MS_MotionSensorActuator);
+			//actuators.add(MS_LightSensorActuator);
+			//actuators.add(BigPadIdleActuator);
+			
+			
+			MConfigs configs = new MConfigs();
+
+			Model model = new Model(configs.getDBConfigs(), actuators);
+			View view = new View(configs);
+			Controller controller = new Controller(view,model,configs.getFilesConfigs());
+			
+			try {
+				Thread.sleep(400);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			controller.setDividersAtDefaultLocation();
+
+		
+	}
+
+}

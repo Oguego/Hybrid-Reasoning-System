@@ -1,0 +1,99 @@
+package edu.casetools.icase.argumentation;
+
+import edu.casetools.icase.mreasoner.core.elements.rules.SameTimeRule;
+import edu.casetools.icase.argumentation.dbConnection;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
+import java.util.Vector;
+	
+public class SameTimeRuleManager{
+
+	private Connection conn = null;
+	private Statement stmt = null;
+	
+	public Vector<SameTimeRule> rules;
+
+	public SameTimeRuleManager() {
+		rules = new Vector<SameTimeRule>();
+	}
+
+
+//	   public void connect(){
+//		   
+//			try {
+//				Class.forName("com.mysql.jdbc.Driver");
+//				conn = DriverManager.getConnection( "jdbc:mysql://localhost:3306/sensors", "mysql", "123456");
+//			    stmt = conn.createStatement();
+//			} catch (ClassNotFoundException | SQLException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//	   }
+	
+		
+	dbConnection connect = new dbConnection();
+	
+	public void compareRules(){
+		int numberConflicts = 0;
+		for(int i=0;i<rules.size();i++){
+			for(int j=i+1;j<rules.size();j++){
+				if(rules.get(i).isConflict(rules.get(j))){
+					//Save conflicts
+					this.connect();
+										
+					long millis=System.currentTimeMillis();  
+					java.sql.Date todayDate=new java.sql.Date(millis);  				
+					String temporalDate = todayDate.toString();	
+					
+					//String temporalDate = "2020-03-03 ";
+					String consequence1, rule1Since, rule1Until,consequence2, rule2Since, rule2Until;
+					consequence1 = rules.get(i).getConsequence().getName();
+					if(!rules.get(i).getConsequence().getStatus()){
+						consequence1 = "!" + consequence1;
+					}
+					rule1Since = temporalDate + " " +rules.get(i).getTemporalOperators().get(0).getSinceValue().getTime_of_day().getTimeString();
+					rule1Until = temporalDate + " " +rules.get(i).getTemporalOperators().get(0).getUntilValue().getTime_of_day().getTimeString();					
+					consequence2 = rules.get(j).getConsequence().getName();
+					if(!rules.get(j).getConsequence().getStatus()){
+						consequence2 = "!" + consequence2;
+					}
+					rule2Since = temporalDate + " " +rules.get(j).getTemporalOperators().get(0).getSinceValue().getTime_of_day().getTimeString();
+					rule2Until = temporalDate + " " +rules.get(j).getTemporalOperators().get(0).getUntilValue().getTime_of_day().getTimeString();
+					
+					
+				try{	
+					String query = "INSERT INTO conflict (idConflict, rule1Consequence, rule1Since, rule1Until, rule2Consequence, rule2Since, rule2Until,  ConflictTime, systemTime, occurrenceTime)"
+							+" VALUES(null, '" + consequence1 + "', '" + rule1Since +  "', '" + rule1Until + "', '" + consequence2 +  "', '" + rule2Since + "', '" + rule2Until + "', current_timestamp, current_timestamp, current_timestamp)";
+	
+					System.out.println(query);
+					stmt.executeUpdate(query);
+				}
+				 catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				numberConflicts ++;
+				}
+			}
+		}
+		System.out.println("There are " + numberConflicts + " conflicts.");
+		if(numberConflicts == 1){
+			infoBox("There is only " + numberConflicts + " conflict.", "Warning: Conflict Detected" );
+		}else{
+			infoBox("There are " + numberConflicts + " conflicts.", "Warning: Conflict Detected" );
+		}
+	}
+	
+	public void infoBox(String infoMessage, String titleBar){
+        JOptionPane.showMessageDialog(null, infoMessage, titleBar, JOptionPane.INFORMATION_MESSAGE);
+    }
+
+}

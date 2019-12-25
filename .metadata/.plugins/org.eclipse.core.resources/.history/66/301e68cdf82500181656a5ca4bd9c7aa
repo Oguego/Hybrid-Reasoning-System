@@ -1,0 +1,5 @@
+package edu.casetools.icase.mreasoner.core.elements.rules;
+
+public class SameTimeRule {
+
+}

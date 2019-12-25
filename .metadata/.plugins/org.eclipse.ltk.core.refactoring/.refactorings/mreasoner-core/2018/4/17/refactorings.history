@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename compilation unit &apos;edu.casetools.icase.argumentation.dbConnection.java&apos; to &apos;ArgumentationConnection.java&apos;&#x0D;&#x0A;- Original project: &apos;mreasoner-core&apos;&#x0D;&#x0A;- Original element: &apos;edu.casetools.icase.argumentation.dbConnection.java&apos;&#x0D;&#x0A;- Renamed element: &apos;edu.casetools.icase.argumentation.ArgumentationConnection.java&apos;" description="Rename compilation unit &apos;dbConnection.java&apos;" flags="2" id="org.eclipse.jdt.ui.rename.compilationunit" input="/src\/main\/java&lt;edu.casetools.icase.argumentation{dbConnection.java" name="ArgumentationConnection.java" references="false" stamp="1524493907806" version="1.0"/>
+</session>

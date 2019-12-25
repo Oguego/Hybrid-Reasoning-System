@@ -1,0 +1,29 @@
+states(CorridorMovement, BedRoomLight, CorridorLight, BigPadIdle, FrontDoorMovement, ShowerMovement, ToiletMovement, ToiletLight, ShowerRoomLight);
+
+is(CorridorMovement);
+is(#CorridorMovement);
+is(FrontDoorMovement);
+is(#FrontDoorMovement);
+is(ShowerMovement);
+is(#ShowerMovement);
+is(BigPadIdle);
+is(ToiletMovement);
+is(#ToiletMovement);
+
+holdsAt(#CorridorMovement, 0);
+holdsAt(#BedRoomLight, 0);
+holdsAt(#CorridorLight, 0);
+holdsAt(#FrontDoorMovement, 0);
+holdsAt(BigPadIdle, 0);
+holdsAt(#ToiletLight, 0);
+holdsAt(#ToiletMovement, 0);
+holdsAt(#ShowerRoomLight, 0);
+holdsAt(#ShowerMovement, 0);
+
+ssr((FrontDoorMovement ^ CorridorMovement) -> CorridorLight);
+ssr((FrontDoorMovement) -> #CorridorLight);
+ssr((CorridorMovement ^ BigPadIdle) -> BedRoomLight);
+ssr((BigPadIdle) -> #BedRoomLight);
+ssr((ToiletMovement) -> ToiletLight);
+ssr((CorridorMovement ^ ShowerMovement) -> ShowerRoomLight);
+ssr((ToiletMovement ^ ShowerMovement) -> #ShowerRoomLight);

@@ -1,0 +1,235 @@
+package edu.casetools.icase.argumentation;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
+
+import javax.swing.JOptionPane;
+
+import edu.casetools.icase.mreasoner.core.elements.rules.SameTimeRule;
+import edu.casetools.icase.mreasoner.core.elements.states.State;
+
+
+public class SameTimeRuleManager{
+
+	protected State consequence;
+	private Connection conn = null;
+	private Statement stmt = null;
+	public Vector<SameTimeRule> rules;
+	private MySQL_ArgumentationDBOperations db;
+
+	public SameTimeRuleManager() {
+		rules = new Vector<SameTimeRule>();
+		db = new MySQL_ArgumentationDBOperations();
+		db.connect();
+	}			
+
+	//	public void compareRules(){
+	//		int numberConflicts = 0;
+	//		List<String> displayList = new ArrayList<>();
+	//		ConflictAnalyser conflictAnalyser;
+	//		for(int i=0;i<rules.size();i++){
+	//			for(int j=i+1;j<rules.size();j++){
+	//				conflictAnalyser = new ConflictAnalyser(rules.get(i),rules.get(j));
+	//				//			if(rules.get(i).isConflict(rules.get(j))){ //not recent comment
+	//				if(conflictAnalyser.isConflict()){
+	//					//Save conflicts
+	//					
+	//					long millis=System.currentTimeMillis();  
+	//					java.sql.Date todayDate=new java.sql.Date(millis);  				
+	//					String temporalDate = todayDate.toString();	
+	//
+	//					String consequence1, consequence2;
+	//					consequence1 = rules.get(i).getConsequence().getName();
+	//					if(!rules.get(i).getConsequence().getStatus()){
+	//						consequence1 = "!" + consequence1;
+	//					}
+	//
+	//					consequence2 = rules.get(j).getConsequence().getName();
+	//					if(!rules.get(j).getConsequence().getStatus()){
+	//						consequence2 = "!" + consequence2;
+	//					}
+	//					
+	//					db.insertConflict(consequence1, consequence2);
+	//
+	//					numberConflicts ++;
+	//				}
+	//
+	//				displayList.add(conflictAnalyser.getDisplay());
+	//			}
+	//		}
+	//		System.out.println("There are " + numberConflicts + " conflicts.");
+	//		if(numberConflicts == 1){
+	//			infoBox("There is only " + numberConflicts + " conflict.", "Warning: Conflict Detected" );
+	//		}else{
+	//			infoBox("There are " + numberConflicts + " conflicts.", "Warning: Conflict Detected" );
+	//		}
+	//		String allConflict = ""; 
+	//		int conflictNo = 0;
+	//		for(int i=0;i<displayList.size();i++){
+	//			if(displayList.get(i)!=null){
+	//				allConflict = allConflict + "Conflict" + " " + ++conflictNo + ":" + " " + displayList.get(i) + "\n";
+	//				//infoBox(displayList.get(i),"Conflict Resolved");
+	//			}			// Chimezie 
+	//		}
+	//		infoBox(allConflict, "Conflict Resolved");
+	//	}
+
+	public void compareRules(){
+		int numberConflicts = 0;
+		List<String> displayList = new ArrayList<>();
+		ConflictAnalyser conflictAnalyser;
+		List<ConflictAnalyser> conflicts = new ArrayList<>();
+		for(int i=0;i<rules.size();i++){
+			for(int j=i+1;j<rules.size();j++){
+				conflictAnalyser = new ConflictAnalyser(rules.get(i),rules.get(j));
+				
+				if(conflictAnalyser.isConflict() && isNotRepeated(conflicts, conflictAnalyser)){
+//				if(conflictAnalyser.isConflict()){
+					
+					conflicts.add(conflictAnalyser);
+					//Save conflicts
+
+					long millis=System.currentTimeMillis();  
+					java.sql.Date todayDate=new java.sql.Date(millis);  				
+					String temporalDate = todayDate.toString();	
+
+					String consequence1, consequence2;
+					consequence1 = rules.get(i).getConsequence().getName();
+					if(!rules.get(i).getConsequence().getStatus()){
+						consequence1 = "!" + consequence1;
+					}
+
+					consequence2 = rules.get(j).getConsequence().getName();
+					if(!rules.get(j).getConsequence().getStatus()){
+						consequence2 = "!" + consequence2;
+					}				
+
+					db.insertConflict(consequence1, consequence2);
+
+					numberConflicts ++;
+				}
+
+				displayList.add(conflictAnalyser.getDisplay());
+			}
+		}
+		System.out.println("There are " + conflicts.size() + " conflicts.");
+		if(conflicts.size() == 1){
+			infoBox("There is only " + conflicts.size() + " conflict.", "Warning: Conflict Detected" );
+		}else{
+			infoBox("There are " + conflicts.size() + " conflicts.", "Warning: Conflict Detected" );
+		}
+		Vector<String> consequences = new Vector<>();
+		for(int i=0;i<conflicts.size();i++){
+			consequences.add(conflicts.get(i).getRule1().getConsequence().getName());
+		}
+		db.dropResolvedConflictsTable();
+		db.createResolvedConflictsTable(consequences);
+		
+		String allConflict = ""; 
+		int conflictNo = 0;
+		for(int i=0;i<displayList.size();i++){
+			if(displayList.get(i)!=null){
+				allConflict = allConflict + "Conflict" + " " + ++conflictNo + ":" + " " + displayList.get(i) + "\n";
+				//infoBox(displayList.get(i),"Conflict Resolved");
+			}
+			else{
+				return null;
+			}
+		}
+		infoBox(allConflict, "Conflict Resolved");
+	}
+
+	private boolean isNotRepeated(List<ConflictAnalyser> conflicts, ConflictAnalyser conflictAnalyser) {
+		// TODO Auto-generated method stub
+		for(int i=0;i<conflicts.size();i++){
+			if(conflicts.get(i).getRule1().getConsequence().equals(conflictAnalyser.getRule1().getConsequence()) || conflicts.get(i).getRule1().getConsequence().equals(conflictAnalyser.getRule2().getConsequence())){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public void infoBox(String infoMessage, String titleBar){
+		JOptionPane.showMessageDialog(null, infoMessage, titleBar, JOptionPane.INFORMATION_MESSAGE);
+	}
+
+}
+
+
+////	
+////	public void compareRules(){
+////		int numberConflicts = 0;
+////		List<String> displayList = new ArrayList<>();
+////		ConflictAnalyser conflictAnalyser;
+////		for(int i=0;i<rules.size();i++){
+////			for(int j=i+1;j<rules.size();j++){
+////				conflictAnalyser = new ConflictAnalyser(rules.get(i),rules.get(j));
+//////				if(rules.get(i).isConflict(rules.get(j))){ //not recent comment
+////				if(conflictAnalyser.isConflict()){
+////					//Save conflicts
+////					this.connect();
+////										
+//////					long millis=System.currentTimeMillis();  
+//////					java.sql.Date todayDate=new java.sql.Date(millis);  				
+//////					String temporalDate = todayDate.toString();	
+////					
+////					String consequence1, consequence2, rule1Since, rule1Until, rule2Since, rule2Until;
+////					consequence1 = rules.get(i).getConsequence().getName();
+////					if(!rules.get(i).getConsequence().getStatus()){
+////						consequence1 = "!" + consequence1;
+////					}
+//////					rule1Since = temporalDate + " " +rules.get(i).getTemporalOperators().get(0).getSinceValue().getTime_of_day().getTimeString();
+//////					rule1Until = temporalDate + " " +rules.get(i).getTemporalOperators().get(0).getUntilValue().getTime_of_day().getTimeString();					
+////					consequence2 = rules.get(j).getConsequence().getName();
+////					if(!rules.get(j).getConsequence().getStatus()){
+////						consequence2 = "!" + consequence2;
+////					}
+//////					rule2Since = temporalDate + " " +rules.get(j).getTemporalOperators().get(0).getSinceValue().getTime_of_day().getTimeString();
+//////					rule2Until = temporalDate + " " +rules.get(j).getTemporalOperators().get(0).getUntilValue().getTime_of_day().getTimeString();
+////					
+////					
+////					try{	
+//////						String query = "INSERT INTO time_conflict (idConflict, rule1Consequence, rule1Begin, rule1End, rule2Consequence, rule2Begin, rule2End,  ConflictTimeBegin, ConflictTimeEnd, systemTime, occurrenceTime)"
+//////								+" VALUES(null, '" + consequence1 + "', '" + rule1Since +  "', '" + rule1Until + "', '" + consequence2 +  "', '" + rule2Since + "', '" + rule2Until + "', '" + temporalDate + " " + conflictAnalyser.getConflictTimeBegin() + "', '" + temporalDate + " " + conflictAnalyser.getConflictTimeEnd() + "', current_timestamp, current_timestamp)";
+////
+////						String query = "INSERT INTO conflict (idconflict, rule1Consequence, rule2Consequence, occurrenceTime)"
+////								+" VALUES(null, '" + consequence1 + "', '" + consequence2 +  "', current_timestamp)";
+////
+////					
+////						System.out.println(query);
+////						stmt.executeUpdate(query);
+////					}
+////					catch (SQLException e1) {
+////						// TODO Auto-generated catch block
+////						e1.printStackTrace();
+////					}
+////					numberConflicts ++;
+////				}
+////				
+////				displayList.add(conflictAnalyser.getDisplay());
+////			}
+////		}
+////		System.out.println("There are " + numberConflicts + " conflicts.");
+////		if(numberConflicts == 1){
+////			infoBox("There is only " + numberConflicts + " conflict.", "Warning: Conflict Detected" );
+////		}else{
+////			infoBox("There are " + numberConflicts + " conflicts.", "Warning: Conflict Detected" );
+////		}
+////		
+////		for(int i=0;i<displayList.size();i++){
+////			if(displayList.get(i)!=null){
+////				infoBox(displayList.get(i),"Conflict Resolved");
+////			}			
+////		}
+////	}
+////	
+////	public void infoBox(String infoMessage, String titleBar){
+////        JOptionPane.showMessageDialog(null, infoMessage, titleBar, JOptionPane.INFORMATION_MESSAGE);
+////    }
+//
+//}

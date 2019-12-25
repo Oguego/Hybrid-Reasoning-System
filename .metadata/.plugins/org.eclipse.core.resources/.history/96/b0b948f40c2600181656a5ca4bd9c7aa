@@ -1,0 +1,41 @@
+package Main;
+
+import edu.casetools.icase.mreasoner.actuators.device.Actuator;
+import edu.casetools.icase.mreasoner.configs.data.MConfigs;
+import edu.casetools.icase.mreasoner.core.elements.rules.SameTimeRuleManager;
+import edu.casetools.icase.mreasoner.gui.controller.Controller;
+import edu.casetools.icase.mreasoner.gui.model.Model;
+import edu.casetools.icase.mreasoner.gui.view.View;
+import edu.casetools.icase.mreasoner.myactuators.LampActuator;
+import edu.casetools.icase.mreasoner.myactuators.LampConfigs;
+
+import java.util.Vector;
+
+import javax.swing.JOptionPane;
+
+public class Main {
+
+	public static void displayBox(String displayMessage, String titleMessage){
+		JOptionPane.showMessageDialog(null, displayMessage, titleMessage, JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		
+		displayBox ("Argumentation Started ", "Start" );
+			
+		 SameTimeRuleManager ruleManager = new SameTimeRuleManager();
+		
+	    if(ruleManager.rules.size()>1){
+	    	System.out.println("Rules so far:");
+	    	for(int i=0;i<ruleManager.rules.size();i++){
+	    		ruleManager.rules.get(i).printRule();    	
+	    	}
+	    	ruleManager.compareRules();
+	    }
+	    
+	}
+
+	
+}

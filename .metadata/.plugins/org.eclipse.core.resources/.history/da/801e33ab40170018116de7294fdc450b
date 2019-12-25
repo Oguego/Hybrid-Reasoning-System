@@ -1,0 +1,10 @@
+package edu.casetools.icase.mreasoner.core.elements.rules;
+
+public class Argumentation {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

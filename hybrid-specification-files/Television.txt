@@ -1,0 +1,28 @@
+states(WatchTV, WatchingNews, WatchingSports, Occ_DisastrousEvent, prefWatchingNews, prefWatchingSports, FootballMatch);
+
+is(Occ_DisastrousEvent);
+is(WatchTV);
+is(FootballMatch);
+
+holdsAt(WatchTV, 0);
+holdsAt(#WatchingNews, 0);
+holdsAt(#WatchingSports, 0);
+holdsAt(#Occ_DisastrousEvent, 0);
+holdsAt(#FootballMatch, 0);
+
+ssr((Occ_DisastrousEvent) ->  WatchTV);
+ssr((FootballMatch) -> #WatchTV);
+ssr(([-][15:00:00-19:00:00]WatchTV ^ prefWatchingNews) -> WatchingNews);
+ssr((WatchingNews) -> #WatchingSports);
+ssr(([-][15:00:00-19:00:00]WatchTV ^ prefWatchingSports) -> WatchingSports);
+ssr((WatchingSports)-> #WatchingNews);
+
+//ssr(([-][15:00:00-19:00:00]Occ_DisastrousEvent) -> prefWatchingNews);
+//ssr(([-][15:00:00-19:00:00]FootballMatch) -> prefWatchingSports);
+//ssr((prefWatchingNews ^ WatchingNews) -> WatchTV);
+//ssr((prefWatchingSports ^ WatchingSports)-> WatchTV);
+
+//ssr((Occ_DisastrousEvent) -> prefWatchingNews);
+//ssr((prefWatchingNews ^ WatchTV) -> WatchingNews);
+//ssr((FootballMatch) -> prefWatchingSports);
+//ssr((prefWatchingSports ^ WatchTV)-> WatchingSports);
